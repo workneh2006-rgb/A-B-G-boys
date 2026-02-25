@@ -3,120 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A/G/S Boys Private</title>
+    <title>A/G/S Boys | Private</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --dark: #1e293b;
-            --light: #f8fafc;
+        /* General Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        body { font-family: sans-serif; background: var(--dark); color: var(--light); margin: 0; padding: 20px; text-align: center; }
-        .card { background: #334155; padding: 20px; border-radius: 12px; max-width: 400px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
-        button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button:hover { background: #1d4ed8; }
         .hidden { display: none; }
-        .friend-item { background: #475569; margin: 10px 0; padding: 15px; border-radius: 8px; cursor: pointer; list-style: none; }
-        .special-btn { background: #9333ea; margin-top: 20px; width: 100%; }
-        .nav-tabs { display: flex; justify-content: space-around; margin-bottom: 20px; }
+        
+        /* Friend List Styling */
+        .friend-card {
+            background: #334155;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-left: 5px solid #22c55e;
+        }
+        .friend-card:hover { background: #475569; }
+        
+        .special-btn { background: #9333ea; margin-top: 20px; }
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .id-badge { font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px; }
+        hr { border: 0; border-top: 1px solid #334155; margin: 20px 0; }
+        ul { list-style: none; padding: 0; text-align: left; }
+        a { color: #38bdf8; text-decoration: none; display: block; margin: 10px 0; }
     </style>
 </head>
 <body>
 
-    <div id="login-page" class="card">
-        <h2>A/G/S Boys Login</h2>
-        <input type="password" id="main-pass" placeholder="Enter Password">
-        <button onclick="login()">Enter</button>
+    <div id="login-screen" class="container">
+        <h1>A/G/S Boys</h1>
+        <p>Private Access Only</p>
+        <input type="password" id="pass-input" placeholder="Enter Password">
+        <button onclick="checkLogin()">Sign In</button>
     </div>
 
-    <div id="main-page" class="hidden">
-        <div class="card">
-            <h3 id="user-id-display"></h3>
-            <hr>
-            <h4>Online Friends</h4>
-            <ul id="friend-list">
-                <li class="friend-item" onclick="showNumber('Alex', '555-0123')">Alex</li>
-                <li class="friend-item" onclick="showNumber('Jordan', '555-0199')">Jordan</li>
-            </ul>
-            
-            <div style="display:flex; gap:10px;">
-                <button onclick="toggleAction('friend')">+ Add Friend</button>
-                <button onclick="toggleAction('link')">+ Add Link</button>
-            </div>
-
-            <button class="special-btn" onclick="showSpecial()">Special Page (Films)</button>
+    <div id="main-screen" class="container hidden">
+        <div class="id-badge" id="display-id"></div>
+        <h2>Online Friends</h2>
+        <div id="friends-container">
+            <div class="friend-card" onclick="viewNumber('Admin')">Admin (Tap for No.)</div>
         </div>
+
+        <div class="action-grid">
+            <button onclick="addFriend()">+ Add Friend</button>
+            <button onclick="addLink()">+ Add Link</button>
+        </div>
+
+        <button class="special-btn" onclick="openSpecial()">Special Page (Films)</button>
     </div>
 
-    <div id="special-page" class="hidden">
-        <div class="card">
-            <button onclick="goBack()" style="float:left; background:#64748b;">Back</button>
-            <h2>Film Links</h2>
-            <input type="text" id="filmSearch" placeholder="Search films..." onkeyup="searchFilms()">
-            <ul id="film-list">
-                <li><a href="#" style="color:cyan;">Inception (2010)</a></li>
-                <li><a href="#" style="color:cyan;">The Matrix</a></li>
-            </ul>
+    <div id="special-screen" class="container hidden">
+        <button onclick="goBack()" style="width: auto; padding: 5px 15px; float: left; background: #64748b;">← Back</button>
+        <div style="clear: both;"></div>
+        <h2>Film Links</h2>
+        <input type="text" id="film-search" placeholder="Search films..." onkeyup="searchFilms()">
+        <div id="film-links">
+            <a href="https://example.com/film1" target="_blank">🎬 Sample Film Link 1</a>
         </div>
     </div>
 
     <script>
-        const MAIN_PASS = "faimse@123";
+        const ACCESS_KEY = "faimse@123";
+        let userSetId = "";
 
-        function login() {
-            const pass = document.getElementById('main-pass').value;
-            if(pass === MAIN_PASS) {
-                document.getElementById('login-page').classList.add('hidden');
-                document.getElementById('main-page').classList.remove('hidden');
-                
-                // Generate Random ID for first-time session
-                const randomID = "AGS-" + Math.floor(Math.random() * 9000 + 1000);
-                document.getElementById('user-id-display').innerText = "Your ID: " + randomID;
-            } else {
-                alert("Wrong password!");
-            }
-        }
-
-        function showNumber(name, num) {
-            const check = prompt(`Enter password to see ${name}'s number:`);
-            if(check === MAIN_PASS) {
-                alert(`${name}'s Number: ${num}`);
-            } else {
-                alert("Access Denied");
-            }
-        }
-
-        function toggleAction(type) {
-            if(type === 'friend') {
-                const name = prompt("Enter friend name:");
-                if(name) {
-                    const li = document.createElement('li');
-                    li.className = 'friend-item';
-                    li.innerText = name;
-                    li.onclick = () => showNumber(name, "Hidden Number");
-                    document.getElementById('friend-list').appendChild(li);
+        // Login Logic
+        function checkLogin() {
+            const val = document.getElementById('pass-input').value;
+            if(val === ACCESS_KEY) {
+                // Generate ID if it's the first time
+                if(!userSetId) {
+                    userSetId = "USER-" + Math.floor(1000 + Math.random() * 9000);
                 }
+                document.getElementById('display-id').innerText = "Logged in as: " + userSetId;
+                
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-screen').classList.remove('hidden');
             } else {
-                const link = prompt("Enter film link:");
-                if(link) alert("Link added to Special Page!");
+                alert("Incorrect Password!");
             }
         }
 
-        function showSpecial() {
-            document.getElementById('main-page').classList.add('hidden');
-            document.getElementById('special-page').classList.remove('hidden');
+        // View Number Logic
+        function viewNumber(name) {
+            const verify = prompt("Verify Password again to see number:");
+            if(verify === ACCESS_KEY) {
+                alert(name + "'s number is: +1234567890");
+            } else {
+                alert("Wrong Password.");
+            }
+        }
+
+        // Add Friend / Link Logic
+        function addFriend() {
+            const name = prompt("Enter Friend's Name:");
+            if(name) {
+                const div = document.createElement('div');
+                div.className = 'friend-card';
+                div.innerText = name + " (Tap for No.)";
+                div.onclick = () => viewNumber(name);
+                document.getElementById('friends-container').appendChild(div);
+            }
+        }
+
+        function addLink() {
+            const title = prompt("Film Title:");
+            const url = prompt("Paste URL:");
+            if(title && url) {
+                const a = document.createElement('a');
+                a.href = url;
+                a.target = "_blank";
+                a.innerText = "🎬 " + title;
+                document.getElementById('film-links').appendChild(a);
+                alert("Link added to Special Page!");
+            }
+        }
+
+        // Navigation
+        function openSpecial() {
+            document.getElementById('main-screen').classList.add('hidden');
+            document.getElementById('special-screen').classList.remove('hidden');
         }
 
         function goBack() {
-            document.getElementById('special-page').classList.add('hidden');
-            document.getElementById('main-page').classList.remove('hidden');
+            document.getElementById('special-screen').classList.add('hidden');
+            document.getElementById('main-screen').classList.remove('hidden');
         }
 
+        // Search Logic
         function searchFilms() {
-            let filter = document.getElementById('filmSearch').value.toUpperCase();
-            let li = document.getElementById('film-list').getElementsByTagName('li');
-            for (let i = 0; i < li.length; i++) {
-                let text = li[i].innerText;
-                li[i].style.display = text.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            let filter = document.getElementById('film-search').value.toLowerCase();
+            let links = document.getElementById('film-links').getElementsByTagName('a');
+            for (let i = 0; i < links.length; i++) {
+                let text = links[i].innerText.toLowerCase();
+                links[i].style.display = text.includes(filter) ? "" : "none";
             }
         }
     </script>
