@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/G/S Boys Private</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        body { font-family: sans-serif; background: var(--dark); color: var(--light); margin: 0; padding: 20px; text-align: center; }
+        .card { background: #334155; padding: 20px; border-radius: 12px; max-width: 400px; margin: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+        button { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .hidden { display: none; }
+        .friend-item { background: #475569; margin: 10px 0; padding: 15px; border-radius: 8px; cursor: pointer; list-style: none; }
+        .special-btn { background: #9333ea; margin-top: 20px; width: 100%; }
+        .nav-tabs { display: flex; justify-content: space-around; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-page" class="card">
+        <h2>A/G/S Boys Login</h2>
+        <input type="password" id="main-pass" placeholder="Enter Password">
+        <button onclick="login()">Enter</button>
+    </div>
+
+    <div id="main-page" class="hidden">
+        <div class="card">
+            <h3 id="user-id-display"></h3>
+            <hr>
+            <h4>Online Friends</h4>
+            <ul id="friend-list">
+                <li class="friend-item" onclick="showNumber('Alex', '555-0123')">Alex</li>
+                <li class="friend-item" onclick="showNumber('Jordan', '555-0199')">Jordan</li>
+            </ul>
+            
+            <div style="display:flex; gap:10px;">
+                <button onclick="toggleAction('friend')">+ Add Friend</button>
+                <button onclick="toggleAction('link')">+ Add Link</button>
+            </div>
+
+            <button class="special-btn" onclick="showSpecial()">Special Page (Films)</button>
+        </div>
+    </div>
+
+    <div id="special-page" class="hidden">
+        <div class="card">
+            <button onclick="goBack()" style="float:left; background:#64748b;">Back</button>
+            <h2>Film Links</h2>
+            <input type="text" id="filmSearch" placeholder="Search films..." onkeyup="searchFilms()">
+            <ul id="film-list">
+                <li><a href="#" style="color:cyan;">Inception (2010)</a></li>
+                <li><a href="#" style="color:cyan;">The Matrix</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const MAIN_PASS = "faimse@123";
+
+        function login() {
+            const pass = document.getElementById('main-pass').value;
+            if(pass === MAIN_PASS) {
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('main-page').classList.remove('hidden');
+                
+                // Generate Random ID for first-time session
+                const randomID = "AGS-" + Math.floor(Math.random() * 9000 + 1000);
+                document.getElementById('user-id-display').innerText = "Your ID: " + randomID;
+            } else {
+                alert("Wrong password!");
+            }
+        }
+
+        function showNumber(name, num) {
+            const check = prompt(`Enter password to see ${name}'s number:`);
+            if(check === MAIN_PASS) {
+                alert(`${name}'s Number: ${num}`);
+            } else {
+                alert("Access Denied");
+            }
+        }
+
+        function toggleAction(type) {
+            if(type === 'friend') {
+                const name = prompt("Enter friend name:");
+                if(name) {
+                    const li = document.createElement('li');
+                    li.className = 'friend-item';
+                    li.innerText = name;
+                    li.onclick = () => showNumber(name, "Hidden Number");
+                    document.getElementById('friend-list').appendChild(li);
+                }
+            } else {
+                const link = prompt("Enter film link:");
+                if(link) alert("Link added to Special Page!");
+            }
+        }
+
+        function showSpecial() {
+            document.getElementById('main-page').classList.add('hidden');
+            document.getElementById('special-page').classList.remove('hidden');
+        }
+
+        function goBack() {
+            document.getElementById('special-page').classList.add('hidden');
+            document.getElementById('main-page').classList.remove('hidden');
+        }
+
+        function searchFilms() {
+            let filter = document.getElementById('filmSearch').value.toUpperCase();
+            let li = document.getElementById('film-list').getElementsByTagName('li');
+            for (let i = 0; i < li.length; i++) {
+                let text = li[i].innerText;
+                li[i].style.display = text.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+    </script>
+</body>
+</html>
